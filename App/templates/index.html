@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Health Insurance Claim Prediction</title>
+    <link rel="stylesheet" href="../static/main_css.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <div class="form-card">
+            <h1>🩺 Health Insurance Claim Predictor</h1>
+            <p class="subheading">Predict whether your claim is <strong>Genuine</strong> or <strong>Fraudulent</strong></p>
+
+            <form action="/predict" method="POST">
+
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> Age</label>
+                    <input type="number" name="Age" placeholder="Enter Age" required>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-venus-mars"></i> Gender (Male=1, Female=0)</label>
+                    <input type="number" name="Gender" placeholder="1 or 0" required>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-weight"></i> BMI</label>
+                    <input type="number" name="BMI" placeholder="Enter BMI" step="any" required>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-smoking"></i> Smoker (Yes=1, No=0)</label>
+                    <input type="number" name="Smoker" placeholder="1 or 0" required>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-users"></i> Number of Dependents</label>
+                    <input type="number" name="Number_of_Dependents" placeholder="Enter Number" required>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-file-medical"></i> Type of Claim (Encoded)</label>
+                    <input type="number" name="Type_of_Claim" placeholder="Enter Claim Type" required>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-money-bill-wave"></i> Claim Amount</label>
+                    <input type="number" name="Claim_Amount" placeholder="Enter Amount" step="any" required>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-history"></i> Number of Previous Claims</label>
+                    <input type="number" name="Number_of_Previous_Claims" placeholder="Enter Number" required>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-hospital"></i> Hospital Stay Duration</label>
+                    <input type="number" name="Hospital_Stay_Duration" placeholder="Enter Duration" required>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-user-md"></i> Doctor Visits</label>
+                    <input type="number" name="Doctor_Visits" placeholder="Enter Visits" required>
+                </div>
+
+                <button type="submit" class="predict-btn">
+                    🚀 Predict Claim Status
+                </button>
+            </form>
+
+            {% if prediction_text %}
+                <div class="result-box">
+                    <h2>{{ prediction_text }}</h2>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>
