@@ -1,13 +1,12 @@
-from flask import Flask, render_template, request
-import joblib
+from flask import Flask, request, render_template
 import numpy as np
+import joblib
 import os
 
 app = Flask(__name__)
 
-# Load Model and Scaler
-model = joblib.load(os.path.join('model', 'fine_tune.pkl'))
-scaler = joblib.load(os.path.join('model', 'scaler.pkl'))
+# Load the trained model
+model = joblib.load('model/model.pkl')
 
 @app.route('/')
 def home():
@@ -15,30 +14,30 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    try:
-        data = request.form
-        inputs = [
-            float(data['Age']),
-            float(data['Gender']),
-            float(data['BMI']),
-            float(data['Smoker']),
-            float(data['Number_of_Dependents']),
-            float(data['Type_of_Claim']),
-            float(data['Claim_Amount']),
-            float(data['Number_of_Previous_Claims']),
-            float(data['Hospital_Stay_Duration']),
-            float(data['Doctor_Visits'])
-        ]
+    # Retrieve form inputs
+    input_data = {
+        'Age': float(request.form['Age']),
+        'Gender': int(request.form['Gender']),
+        'BMI': float(request.form['BMI']),
+        'Smoker': int(request.form['Smoker']),
+        'Number_of_Dependents': int(request.form['Number_of_Dependents']),
+        'Type_of_Claim': int(request.form['Type_of_Claim']),
+        'Claim_Amount': float(request.form['Claim_Amount']),
+        'Number_of_Previous_Claims': int(request.form['Number_of_Previous_Claims']),
+        'Hospital_Stay_Duration': int(request.form['Hospital_Stay_Duration']),
+        'Doctor_Visits': int(request.form['Doctor_Visits'])
+    }
 
-        inputs_np = np.array(inputs).reshape(1, -1)
-        inputs_scaled = scaler.transform(inputs_np)
+    # Convert to array for prediction
+    values = np.array(list(input_data.values())).reshape(1, -1)
 
-        prediction = model.predict(inputs_scaled)[0]
-        result = "Genuine Claim" if prediction == 0 else "Fraudulent Claim"
+    # Make prediction
+    prediction = model.predict(values)[0]
+    result = "✅ Genuine Claim" if prediction == 0 else "❌ Fraudulent Claim"
 
-        return render_template('index.html', prediction_text=f'Result: {result}')
-    except Exception as e:
-        return render_template('index.html', prediction_text=f'Error: {str(e)}')
+    return render_template('index.html',
+                           prediction_text=result,
+                           input_values=input_data)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)

@@ -1,82 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Health Insurance Claim Prediction</title>
-    <link rel="stylesheet" href="../static/main_css.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <title>🩺 Health Insurance Claim Predictor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #e3f2fd;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 600px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #01579b;
+      margin-bottom: 25px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+      color: #333;
+    }
+
+    .example {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #0288d1;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      margin-top: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #01579b;
+    }
+
+    .result-box {
+      margin-top: 20px;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+      color: #004d40;
+      background-color: #c8e6c9;
+      border-radius: 10px;
+    }
+
+    .input-summary {
+      margin-top: 20px;
+      padding: 15px;
+      background-color: #f1f8e9;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .input-summary ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .input-summary li {
+      margin-bottom: 6px;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h1>🩺 Health Insurance Claim Predictor</h1>
+    <form method="POST" action="/predict">
+      <label>Age</label>
+      <div class="example">Enter Age</div>
+      <input type="number" name="Age" required />
 
-    <div class="main-wrapper">
-        <div class="form-card">
-            <h1>🩺 Health Insurance Claim Predictor</h1>
-            <p class="subheading">Predict whether your claim is <strong>Genuine</strong> or <strong>Fraudulent</strong></p>
+      <label>Gender (Male=1, Female=0)</label>
+      <div class="example">1 or 0</div>
+      <input type="number" name="Gender" min="0" max="1" required />
 
-            <form action="/predict" method="POST">
+      <label>BMI</label>
+      <div class="example">Enter BMI</div>
+      <input type="number" step="any" name="BMI" required />
 
-                <div class="input-group">
-                    <label><i class="fas fa-user"></i> Age</label>
-                    <input type="number" name="Age" placeholder="Enter Age" required>
-                </div>
+      <label>Smoker (Yes=1, No=0)</label>
+      <div class="example">1 or 0</div>
+      <input type="number" name="Smoker" min="0" max="1" required />
 
-                <div class="input-group">
-                    <label><i class="fas fa-venus-mars"></i> Gender (Male=1, Female=0)</label>
-                    <input type="number" name="Gender" placeholder="1 or 0" required>
-                </div>
+      <label>Number of Dependents</label>
+      <div class="example">Enter Number</div>
+      <input type="number" name="Number_of_Dependents" required />
 
-                <div class="input-group">
-                    <label><i class="fas fa-weight"></i> BMI</label>
-                    <input type="number" name="BMI" placeholder="Enter BMI" step="any" required>
-                </div>
+      <label>Type of Claim (Encoded)</label>
+      <div class="example">Enter Claim Type</div>
+      <input type="number" name="Type_of_Claim" required />
 
-                <div class="input-group">
-                    <label><i class="fas fa-smoking"></i> Smoker (Yes=1, No=0)</label>
-                    <input type="number" name="Smoker" placeholder="1 or 0" required>
-                </div>
+      <label>Claim Amount</label>
+      <div class="example">Enter Amount</div>
+      <input type="number" step="any" name="Claim_Amount" required />
 
-                <div class="input-group">
-                    <label><i class="fas fa-users"></i> Number of Dependents</label>
-                    <input type="number" name="Number_of_Dependents" placeholder="Enter Number" required>
-                </div>
+      <label>Number of Previous Claims</label>
+      <div class="example">Enter Number</div>
+      <input type="number" name="Number_of_Previous_Claims" required />
 
-                <div class="input-group">
-                    <label><i class="fas fa-file-medical"></i> Type of Claim (Encoded)</label>
-                    <input type="number" name="Type_of_Claim" placeholder="Enter Claim Type" required>
-                </div>
+      <label>Hospital Stay Duration</label>
+      <div class="example">Enter Duration</div>
+      <input type="number" name="Hospital_Stay_Duration" required />
 
-                <div class="input-group">
-                    <label><i class="fas fa-money-bill-wave"></i> Claim Amount</label>
-                    <input type="number" name="Claim_Amount" placeholder="Enter Amount" step="any" required>
-                </div>
+      <label>Doctor Visits</label>
+      <div class="example">Enter Visits</div>
+      <input type="number" name="Doctor_Visits" required />
 
-                <div class="input-group">
-                    <label><i class="fas fa-history"></i> Number of Previous Claims</label>
-                    <input type="number" name="Number_of_Previous_Claims" placeholder="Enter Number" required>
-                </div>
+      <button type="submit">🚀 Predict Claim Status</button>
+    </form>
 
-                <div class="input-group">
-                    <label><i class="fas fa-hospital"></i> Hospital Stay Duration</label>
-                    <input type="number" name="Hospital_Stay_Duration" placeholder="Enter Duration" required>
-                </div>
-
-                <div class="input-group">
-                    <label><i class="fas fa-user-md"></i> Doctor Visits</label>
-                    <input type="number" name="Doctor_Visits" placeholder="Enter Visits" required>
-                </div>
-
-                <button type="submit" class="predict-btn">
-                    🚀 Predict Claim Status
-                </button>
-            </form>
-
-            {% if prediction_text %}
-                <div class="result-box">
-                    <h2>{{ prediction_text }}</h2>
-                </div>
-            {% endif %}
-        </div>
+    {% if prediction_text %}
+    <div class="result-box">
+      Result: {{ prediction_text }}
     </div>
+    {% endif %}
 
+    {% if input_values %}
+    <div class="input-summary">
+      <h3>🔍 You Entered:</h3>
+      <ul>
+        {% for key, value in input_values.items() %}
+        <li><strong>{{ key.replace('_', ' ') }}:</strong> {{ value }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
 </body>
 </html>

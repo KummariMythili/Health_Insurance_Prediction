@@ -10,7 +10,6 @@ Age,Gender,BMI,Smoker,Number_of_Dependents,Type_of_Claim,Claim_Amount,Number_of_
 33,Male,31.78,No,2,Emergency,43991.35,7,9,0,Genuine Claim
 47,Female,27.57,No,4,Hospitalization,28626.37,7,3,7,Fraudulent Claim
 27,Male,33.81,Yes,2,Hospitalization,32605.48,2,6,8,Fraudulent Claim
-64,Male,26.22,Yes,2,Emergency,46245.85,8,1,9,Genuine Claim
 57,Male,30.24,No,1,Hospitalization,14675.17,8,11,3,Fraudulent Claim
 76,Female,22.72,Yes,4,Emergency,37097.61,6,10,6,Genuine Claim
 75,Female,12.38,No,3,Hospitalization,42704.43,2,3,2,Fraudulent Claim
