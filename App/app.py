@@ -1,12 +1,14 @@
 from flask import Flask, request, render_template
 import numpy as np
 import joblib
-import os
 
 app = Flask(__name__)
 
 # Load the trained model
 model = joblib.load('model/model.pkl')
+
+# If using a scaler, load it too
+scaler = joblib.load('model/scaler.pkl')
 
 @app.route('/')
 def home():
@@ -14,30 +16,33 @@ def home():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Retrieve form inputs
+    # Get form inputs
     input_data = {
-        'Age': float(request.form['Age']),
-        'Gender': int(request.form['Gender']),
-        'BMI': float(request.form['BMI']),
-        'Smoker': int(request.form['Smoker']),
-        'Number_of_Dependents': int(request.form['Number_of_Dependents']),
-        'Type_of_Claim': int(request.form['Type_of_Claim']),
-        'Claim_Amount': float(request.form['Claim_Amount']),
-        'Number_of_Previous_Claims': int(request.form['Number_of_Previous_Claims']),
-        'Hospital_Stay_Duration': int(request.form['Hospital_Stay_Duration']),
-        'Doctor_Visits': int(request.form['Doctor_Visits'])
+        'age': float(request.form['age']),
+        'gender': int(request.form['gender']),
+        'bmi': float(request.form['bmi']),
+        'smoker': int(request.form['smoker']),
+        'dependents': int(request.form['dependents']),
+        'claim_type': int(request.form['claim_type']),
+        'claim_amount': float(request.form['claim_amount']),
+        'previous_claims': int(request.form['previous_claims']),
+        'stay_duration': int(request.form['stay_duration']),
+        'doctor_visits': int(request.form['doctor_visits'])
     }
 
-    # Convert to array for prediction
-    values = np.array(list(input_data.values())).reshape(1, -1)
+    # Prepare data for prediction
+    input_array = np.array(list(input_data.values())).reshape(1, -1)
+
+    # Scale input data
+    input_scaled = scaler.transform(input_array)
 
     # Make prediction
-    prediction = model.predict(values)[0]
+    prediction = model.predict(input_scaled)[0]
     result = "✅ Genuine Claim" if prediction == 0 else "❌ Fraudulent Claim"
 
     return render_template('index.html',
                            prediction_text=result,
-                           input_values=input_data)
+                           request=request)
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)

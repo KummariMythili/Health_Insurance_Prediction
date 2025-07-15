@@ -2,162 +2,160 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>🩺 Health Insurance Claim Predictor</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #e3f2fd;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px;
-    }
-
-    .container {
-      background: #ffffff;
-      padding: 30px 40px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-      width: 100%;
-      max-width: 600px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #01579b;
-      margin-bottom: 25px;
-    }
-
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 15px;
-      color: #333;
-    }
-
-    .example {
-      font-size: 12px;
-      color: #666;
-      margin-bottom: 5px;
-    }
-
-    input {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 10px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #0288d1;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      margin-top: 15px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #01579b;
-    }
-
-    .result-box {
-      margin-top: 20px;
-      padding: 15px;
-      text-align: center;
-      font-weight: bold;
-      color: #004d40;
-      background-color: #c8e6c9;
-      border-radius: 10px;
-    }
-
-    .input-summary {
-      margin-top: 20px;
-      padding: 15px;
-      background-color: #f1f8e9;
-      border-radius: 10px;
-      font-size: 14px;
-    }
-
-    .input-summary ul {
-      list-style-type: none;
-      padding: 0;
-    }
-
-    .input-summary li {
-      margin-bottom: 6px;
-    }
-  </style>
+  <title>Health Insurance Claim Predictor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='assets/css/style.css') }}">
 </head>
 <body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
-    <h1>🩺 Health Insurance Claim Predictor</h1>
-    <form method="POST" action="/predict">
-      <label>Age</label>
-      <div class="example">Enter Age</div>
-      <input type="number" name="Age" required />
+    <a class="navbar-brand" href="/">🏥 Health Claim Predictor</a>
+  </div>
+</nav>
 
-      <label>Gender (Male=1, Female=0)</label>
-      <div class="example">1 or 0</div>
-      <input type="number" name="Gender" min="0" max="1" required />
+<header class="bg-light py-5 text-center">
+  <div class="container">
+    <h1 class="display-5 fw-bold">Health Insurance Claim Prediction</h1>
+    <p class="lead">Predict whether a claim is genuine or fraudulent using ML.</p>
+    <img src="{{ url_for('static', filename='university.jpg') }}" 
+         alt="Insurance" 
+         class="img-fluid rounded mt-3" 
+         style="max-height: 300px;">
+  </div>
+</header>
 
-      <label>BMI</label>
-      <div class="example">Enter BMI</div>
-      <input type="number" step="any" name="BMI" required />
+<section class="py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">📝 Enter Claim Information</h2>
+    <form method="POST" action="/predict" class="row g-3">
 
-      <label>Smoker (Yes=1, No=0)</label>
-      <div class="example">1 or 0</div>
-      <input type="number" name="Smoker" min="0" max="1" required />
+      <div class="col-md-6">
+        <label class="form-label">👤 Age</label>
+        <input type="number" name="age" class="form-control" placeholder="e.g., 45" required>
+      </div>
 
-      <label>Number of Dependents</label>
-      <div class="example">Enter Number</div>
-      <input type="number" name="Number_of_Dependents" required />
+      <div class="col-md-6">
+        <label class="form-label">⚧️ Gender (Male=1, Female=0)</label>
+        <input type="number" min="0" max="1" name="gender" class="form-control" placeholder="1 or 0" required>
+      </div>
 
-      <label>Type of Claim (Encoded)</label>
-      <div class="example">Enter Claim Type</div>
-      <input type="number" name="Type_of_Claim" required />
+      <div class="col-md-6">
+        <label class="form-label">📏 BMI</label>
+        <input type="number" step="0.01" name="bmi" class="form-control" placeholder="e.g., 27.5" required>
+      </div>
 
-      <label>Claim Amount</label>
-      <div class="example">Enter Amount</div>
-      <input type="number" step="any" name="Claim_Amount" required />
+      <div class="col-md-6">
+        <label class="form-label">🚬 Smoker (Yes=1, No=0)</label>
+        <input type="number" min="0" max="1" name="smoker" class="form-control" required>
+      </div>
 
-      <label>Number of Previous Claims</label>
-      <div class="example">Enter Number</div>
-      <input type="number" name="Number_of_Previous_Claims" required />
+      <div class="col-md-6">
+        <label class="form-label">👨‍👩‍👧 Number of Dependents</label>
+        <input type="number" name="dependents" class="form-control" placeholder="e.g., 2" required>
+      </div>
 
-      <label>Hospital Stay Duration</label>
-      <div class="example">Enter Duration</div>
-      <input type="number" name="Hospital_Stay_Duration" required />
+      <div class="col-md-6">
+        <label class="form-label">📂 Type of Claim (Encoded)</label>
+        <input type="number" name="claim_type" class="form-control" placeholder="e.g., 0 for Emergency" required>
+      </div>
 
-      <label>Doctor Visits</label>
-      <div class="example">Enter Visits</div>
-      <input type="number" name="Doctor_Visits" required />
+      <div class="col-md-6">
+        <label class="form-label">💰 Claim Amount</label>
+        <input type="number" step="0.01" name="claim_amount" class="form-control" required>
+      </div>
 
-      <button type="submit">🚀 Predict Claim Status</button>
+      <div class="col-md-6">
+        <label class="form-label">📁 Previous Claims</label>
+        <input type="number" name="previous_claims" class="form-control" required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">🏥 Hospital Stay Duration (Days)</label>
+        <input type="number" name="stay_duration" class="form-control" required>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">👨‍⚕️ Doctor Visits</label>
+        <input type="number" name="doctor_visits" class="form-control" required>
+      </div>
+
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary w-100">🔍 Predict Claim Status</button>
+      </div>
     </form>
 
     {% if prediction_text %}
-    <div class="result-box">
-      Result: {{ prediction_text }}
+    <div class="alert alert-success mt-5">
+      <h4>📌 Prediction: <strong>{{ prediction_text }}</strong></h4>
     </div>
     {% endif %}
 
-    {% if input_values %}
-    <div class="input-summary">
-      <h3>🔍 You Entered:</h3>
-      <ul>
-        {% for key, value in input_values.items() %}
-        <li><strong>{{ key.replace('_', ' ') }}:</strong> {{ value }}</li>
-        {% endfor %}
+    {% if request.method == 'POST' %}
+    <div class="mt-4 p-3 bg-light border rounded">
+      <h5>📥 Input Summary:</h5>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Age:</strong> {{ request.form.age }}</li>
+        <li class="list-group-item"><strong>Gender:</strong> {{ request.form.gender }}</li>
+        <li class="list-group-item"><strong>BMI:</strong> {{ request.form.bmi }}</li>
+        <li class="list-group-item"><strong>Smoker:</strong> {{ request.form.smoker }}</li>
+        <li class="list-group-item"><strong>Dependents:</strong> {{ request.form.dependents }}</li>
+        <li class="list-group-item"><strong>Claim Type:</strong> {{ request.form.claim_type }}</li>
+        <li class="list-group-item"><strong>Claim Amount:</strong> {{ request.form.claim_amount }}</li>
+        <li class="list-group-item"><strong>Previous Claims:</strong> {{ request.form.previous_claims }}</li>
+        <li class="list-group-item"><strong>Stay Duration:</strong> {{ request.form.stay_duration }}</li>
+        <li class="list-group-item"><strong>Doctor Visits:</strong> {{ request.form.doctor_visits }}</li>
       </ul>
     </div>
     {% endif %}
   </div>
+</section>
+
+<section class="bg-light py-5">
+  <div class="container">
+    <h2 class="text-center mb-4">About the Project</h2>
+    <p class="text-center">This machine learning model helps predict whether a submitted health insurance claim is likely to be genuine or fraudulent based on key input features.</p>
+    <div class="row mt-4">
+      <div class="col-md-4 text-center">
+        <h5>📊 Feature Inputs</h5>
+        <p>Analyzes age, gender, BMI, smoker status, claim amount, etc.</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <h5>🧠 ML Algorithms</h5>
+        <p>Built using algorithms like Logistic Regression, SVM, and Random Forest.</p>
+      </div>
+      <div class="col-md-4 text-center">
+        <h5>🎯 Claim Decision</h5>
+        <p>Predicts if the claim is genuine or potentially fraudulent.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5 bg-white border-top">
+  <div class="container">
+    <h2 class="text-center mb-4">📘 Understanding the Fields</h2>
+    <ul class="list-group list-group-flush fs-5">
+      <li class="list-group-item"><strong>Age:</strong> Age of the policyholder.</li>
+      <li class="list-group-item"><strong>Gender:</strong> 1 = Male, 0 = Female.</li>
+      <li class="list-group-item"><strong>BMI:</strong> Body Mass Index (health factor).</li>
+      <li class="list-group-item"><strong>Smoker:</strong> 1 = Smoker, 0 = Non-smoker.</li>
+      <li class="list-group-item"><strong>Dependents:</strong> Number of dependents on the policy.</li>
+      <li class="list-group-item"><strong>Claim Type:</strong> Encoded claim type.</li>
+      <li class="list-group-item"><strong>Claim Amount:</strong> Amount claimed by the insured.</li>
+      <li class="list-group-item"><strong>Previous Claims:</strong> Number of previous claims filed.</li>
+      <li class="list-group-item"><strong>Stay Duration:</strong> Duration of hospital stay.</li>
+      <li class="list-group-item"><strong>Doctor Visits:</strong> Number of doctor visits for treatment.</li>
+    </ul>
+  </div>
+</section>
+
+<footer class="bg-primary text-white text-center py-3">
+  &copy; 2025 Health Claim Prediction System | Detect Smarter, Settle Faster!
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
 </body>
 </html>
