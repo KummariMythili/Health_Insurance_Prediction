@@ -15,102 +15,22 @@
   </div>
 </nav>
 
-<header class="bg-light py-5 text-center">
+<header class="bg-light py-5">
   <div class="container">
-    <h1 class="display-5 fw-bold">Health Insurance Claim Prediction</h1>
-    <p class="lead">Predict whether a claim is genuine or fraudulent using ML.</p>
-    <img src="{{ url_for('static', filename='university.jpg') }}" 
-         alt="Insurance" 
-         class="img-fluid rounded mt-3" 
-         style="max-height: 300px;">
+    <div class="row align-items-center">
+      <div class="col-md-7">
+        <h1 class="display-5 fw-bold">Health Insurance Claim Prediction</h1>
+        <p class="lead">Predict whether a claim is genuine or fraudulent using ML.</p>
+      </div>
+      <div class="col-md-5 text-center">
+        <img src="{{ url_for('static', filename='health.jpg') }}" 
+             alt="Insurance" 
+             class="img-fluid rounded" 
+             style="max-height: 250px;">
+      </div>
+    </div>
   </div>
 </header>
-
-<section class="py-5">
-  <div class="container">
-    <h2 class="text-center mb-4">📝 Enter Claim Information</h2>
-    <form method="POST" action="/predict" class="row g-3">
-
-      <div class="col-md-6">
-        <label class="form-label">👤 Age</label>
-        <input type="number" name="age" class="form-control" placeholder="e.g., 45" required>
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">⚧️ Gender (Male=1, Female=0)</label>
-        <input type="number" min="0" max="1" name="gender" class="form-control" placeholder="1 or 0" required>
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">📏 BMI</label>
-        <input type="number" step="0.01" name="bmi" class="form-control" placeholder="e.g., 27.5" required>
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">🚬 Smoker (Yes=1, No=0)</label>
-        <input type="number" min="0" max="1" name="smoker" class="form-control" required>
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">👨‍👩‍👧 Number of Dependents</label>
-        <input type="number" name="dependents" class="form-control" placeholder="e.g., 2" required>
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">📂 Type of Claim (Encoded)</label>
-        <input type="number" name="claim_type" class="form-control" placeholder="e.g., 0 for Emergency" required>
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">💰 Claim Amount</label>
-        <input type="number" step="0.01" name="claim_amount" class="form-control" required>
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">📁 Previous Claims</label>
-        <input type="number" name="previous_claims" class="form-control" required>
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">🏥 Hospital Stay Duration (Days)</label>
-        <input type="number" name="stay_duration" class="form-control" required>
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">👨‍⚕️ Doctor Visits</label>
-        <input type="number" name="doctor_visits" class="form-control" required>
-      </div>
-
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary w-100">🔍 Predict Claim Status</button>
-      </div>
-    </form>
-
-    {% if prediction_text %}
-    <div class="alert alert-success mt-5">
-      <h4>📌 Prediction: <strong>{{ prediction_text }}</strong></h4>
-    </div>
-    {% endif %}
-
-    {% if request.method == 'POST' %}
-    <div class="mt-4 p-3 bg-light border rounded">
-      <h5>📥 Input Summary:</h5>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"><strong>Age:</strong> {{ request.form.age }}</li>
-        <li class="list-group-item"><strong>Gender:</strong> {{ request.form.gender }}</li>
-        <li class="list-group-item"><strong>BMI:</strong> {{ request.form.bmi }}</li>
-        <li class="list-group-item"><strong>Smoker:</strong> {{ request.form.smoker }}</li>
-        <li class="list-group-item"><strong>Dependents:</strong> {{ request.form.dependents }}</li>
-        <li class="list-group-item"><strong>Claim Type:</strong> {{ request.form.claim_type }}</li>
-        <li class="list-group-item"><strong>Claim Amount:</strong> {{ request.form.claim_amount }}</li>
-        <li class="list-group-item"><strong>Previous Claims:</strong> {{ request.form.previous_claims }}</li>
-        <li class="list-group-item"><strong>Stay Duration:</strong> {{ request.form.stay_duration }}</li>
-        <li class="list-group-item"><strong>Doctor Visits:</strong> {{ request.form.doctor_visits }}</li>
-      </ul>
-    </div>
-    {% endif %}
-  </div>
-</section>
 
 <section class="bg-light py-5">
   <div class="container">
@@ -133,21 +53,104 @@
   </div>
 </section>
 
-<section class="py-5 bg-white border-top">
+<section class="py-5">
   <div class="container">
-    <h2 class="text-center mb-4">📘 Understanding the Fields</h2>
-    <ul class="list-group list-group-flush fs-5">
-      <li class="list-group-item"><strong>Age:</strong> Age of the policyholder.</li>
-      <li class="list-group-item"><strong>Gender:</strong> 1 = Male, 0 = Female.</li>
-      <li class="list-group-item"><strong>BMI:</strong> Body Mass Index (health factor).</li>
-      <li class="list-group-item"><strong>Smoker:</strong> 1 = Smoker, 0 = Non-smoker.</li>
-      <li class="list-group-item"><strong>Dependents:</strong> Number of dependents on the policy.</li>
-      <li class="list-group-item"><strong>Claim Type:</strong> Encoded claim type.</li>
-      <li class="list-group-item"><strong>Claim Amount:</strong> Amount claimed by the insured.</li>
-      <li class="list-group-item"><strong>Previous Claims:</strong> Number of previous claims filed.</li>
-      <li class="list-group-item"><strong>Stay Duration:</strong> Duration of hospital stay.</li>
-      <li class="list-group-item"><strong>Doctor Visits:</strong> Number of doctor visits for treatment.</li>
-    </ul>
+    <div class="row">
+      
+      <!-- Prediction Form -->
+      <div class="col-md-6">
+        <h2 class="mb-4">📝 Enter Claim Information</h2>
+        <form method="POST" action="/predict" class="row g-3">
+
+          <div class="col-md-6">
+            <label class="form-label">👤 Age</label>
+            <input type="number" name="age" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">⚧️ Gender (1=Male, 0=Female)</label>
+            <input type="number" min="0" max="1" name="gender" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">📏 BMI</label>
+            <input type="number" step="0.01" name="bmi" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">🚬 Smoker (1=Yes, 0=No)</label>
+            <input type="number" min="0" max="1" name="smoker" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">👨‍👩‍👧 Dependents</label>
+            <input type="number" name="dependents" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">📂 Claim Type (Encoded)</label>
+            <input type="number" name="claim_type" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">💰 Claim Amount</label>
+            <input type="number" step="0.01" name="claim_amount" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">📁 Previous Claims</label>
+            <input type="number" name="previous_claims" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">🏥 Stay Duration</label>
+            <input type="number" name="stay_duration" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">👨‍⚕️ Doctor Visits</label>
+            <input type="number" name="doctor_visits" class="form-control" required>
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">🔍 Predict Claim Status</button>
+          </div>
+        </form>
+
+        {% if prediction_text %}
+        <div class="alert alert-success mt-4">
+          <h5>📌 Prediction: <strong>{{ prediction_text }}</strong></h5>
+        </div>
+        {% endif %}
+
+        {% if request.method == 'POST' %}
+        <div class="mt-3 p-3 bg-light border rounded">
+          <h6>📥 Input Summary:</h6>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Age:</strong> {{ request.form.age }}</li>
+            <li class="list-group-item"><strong>Gender:</strong> {{ request.form.gender }}</li>
+            <li class="list-group-item"><strong>BMI:</strong> {{ request.form.bmi }}</li>
+            <li class="list-group-item"><strong>Smoker:</strong> {{ request.form.smoker }}</li>
+            <li class="list-group-item"><strong>Dependents:</strong> {{ request.form.dependents }}</li>
+            <li class="list-group-item"><strong>Claim Type:</strong> {{ request.form.claim_type }}</li>
+            <li class="list-group-item"><strong>Claim Amount:</strong> {{ request.form.claim_amount }}</li>
+            <li class="list-group-item"><strong>Previous Claims:</strong> {{ request.form.previous_claims }}</li>
+            <li class="list-group-item"><strong>Stay Duration:</strong> {{ request.form.stay_duration }}</li>
+            <li class="list-group-item"><strong>Doctor Visits:</strong> {{ request.form.doctor_visits }}</li>
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Understanding the Fields -->
+      <div class="col-md-6">
+        <h2 class="mb-4">📘 Understanding the Fields</h2>
+        <ul class="list-group list-group-flush fs-5">
+          <li class="list-group-item"><strong>Age:</strong> Policyholder's age.</li>
+          <li class="list-group-item"><strong>Gender:</strong> 1 = Male, 0 = Female.</li>
+          <li class="list-group-item"><strong>BMI:</strong> Body Mass Index.</li>
+          <li class="list-group-item"><strong>Smoker:</strong> 1 = Smoker, 0 = Non-smoker.</li>
+          <li class="list-group-item"><strong>Dependents:</strong> Number of dependents.</li>
+          <li class="list-group-item"><strong>Claim Type:</strong> Encoded claim category.</li>
+          <li class="list-group-item"><strong>Claim Amount:</strong> Amount being claimed.</li>
+          <li class="list-group-item"><strong>Previous Claims:</strong> Prior claims filed.</li>
+          <li class="list-group-item"><strong>Stay Duration:</strong> Days in hospital.</li>
+          <li class="list-group-item"><strong>Doctor Visits:</strong> Visits during treatment.</li>
+        </ul>
+      </div>
+
+    </div>
   </div>
 </section>
 
